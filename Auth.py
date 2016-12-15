@@ -38,29 +38,3 @@ class Auth:
         return credentials
 
 
-def main():
-    auth = Auth('https://www.googleapis.com/auth/drive.metadata.readonly', 'client_secret.json', 'drive')
-    credentials = auth.get_credentials()
-    http = credentials.authorize(httplib2.Http())
-    service = discovery.build('drive', 'v3', http=http)
-
-    results = service.files().list(q="'me' in owners and not mimeType contains 'application/vnd.google-apps'",
-        pageSize=1000,
-        spaces="drive",
-        fields="files(id, name, size, mimeType, quotaBytesUsed)").execute()
-    items = results.get('files', [])
-    if not items:
-        print('No files found.')
-    else:
-        print('Files:')
-        print(len(items))
-        s = 0
-        for item in items:
-            s += (int(item["quotaBytesUsed"])/1024)/1024
-            if ((int(item["quotaBytesUsed"])/1024)/1024 > 100):
-                print(item)
-
-        print(s)
-
-
-main()
