@@ -16,7 +16,7 @@ def main():
     http = credentials.authorize(httplib2.Http())
     service = discovery.build('drive', 'v3', http=http)
 
-    results = service.files().list(q="'me' in owners and  mimeType contains 'application/vnd.google-apps.folder'",
+    results = service.files().list(q="'me' in owners and  not mimeType contains 'application/vnd.google-apps'",
         pageSize=1000,
         spaces="drive",
         fields="files(id, name, size, mimeType, quotaBytesUsed)").execute()
@@ -25,15 +25,19 @@ def main():
     child = service.files().list(q="'0BwjaEAUUi370QWdEeWY2eTR6YjQ' in parents and 'me' in owners",
                                  fields="files(id, name, size, mimeType, quotaBytesUsed)", pageSize=1000).execute()
     childrens = child.get('files', [])
+
+    items = results.get('files', [])
     for itm in childrens:
         print(itm)
 
-    items = results.get('files', [])
+    print("General files")
+
     if not items:
         print('No files found.')
     else:
         print('Files:')
         print(len(items))
-        s = 0
+        for item in items:
+            print(item)
 
 main()
