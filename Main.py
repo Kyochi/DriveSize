@@ -8,36 +8,34 @@ def main():
     credentials = auth.get_credentials()
     http = credentials.authorize(httplib2.Http())
     service = discovery.build('drive', 'v3', http=http)
+    service2 = discovery.build('drive', 'v2', http=http)
+
+    aboutDrive = service2.about().get().execute()
+    rootid = aboutDrive['rootFolderId']
+    print(rootid)
 
     results = service.files().list(q="'me' in owners and  not mimeType contains 'application/vnd.google-apps'",
         pageSize=1000,
         spaces="drive",
         fields="files(id, name, size, mimeType, quotaBytesUsed)").execute()
 
-#XXX pour choper les enfants d'un parents XXXX
-    #child = service.files().list(q="'XXXX' in parents and 'me' in owners",
-    #                             fields="files(id, name, size, mimeType, quotaBytesUsed)", pageSize=1000).execute()
-   # childrens = child.get('files', [])
 
-    rootfile = service.files().list(q=" 'me' in owners and 'root' in parents "
-                                    , fields="files(id, name, size, mimeType, parents)").execute()
+    rootfile = service.files().list(q=" 'me' in owners and 'root' in parents ",
+        pageSize=1000,
+        spaces="drive",
+        fields="files(id, name, size, mimeType, parents, quotaBytesUsed)").execute()
 
 
-    items = results.get('files', [])
     rootfs = rootfile.get('files', [])
-    print(len(rootfs))
+    rootFolderSorted = sorted(rootfs,key=lambda parent : parent['parents'][0])
 
-    for rf in rootfs:
-        print(rf['parents'][0])
-
-
-
-    print("General files")
-
-    if not items:
+    if not rootfs:
         print('No files found.')
     else:
-        print('Files:')
-        print(len(items))
+        print('Total Files:')
+        print(len(rootfs))
+
+    for itemSorted in rootFolderSorted:
+        print(itemSorted)
 
 main()
