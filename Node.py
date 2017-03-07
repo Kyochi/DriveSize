@@ -3,7 +3,4 @@ class Node:
         self.m_type = type
         self.m_value = value
         self.m_childs = childs
-
-
-
-
+        self.m_visited = False

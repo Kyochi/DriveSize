@@ -1,43 +1,23 @@
-import Auth
-import httplib2
-import os
-from apiclient import discovery
-from oauth2client import client
-from oauth2client import tools
-from oauth2client.file import Storage
-class DriveManip:
+
+
+class DriveOp:
+
     @staticmethod
     def getMoUsed(bytesUsed):
         return int(bytesUsed)/1024/1024
 
-def main():
-    auth = Auth.Auth('https://www.googleapis.com/auth/drive.metadata.readonly', 'client_secret.json', 'drive')
-    credentials = auth.get_credentials()
-    http = credentials.authorize(httplib2.Http())
-    service = discovery.build('drive', 'v3', http=http)
+    @staticmethod
+    def binarySearch(collection, target):
+        start = 0
+        end = len(collection)-1
+        while (start < end):
+            mid = collection[(start+end)/2]
+            if (collection[mid] == target):
+                return mid
 
-    results = service.files().list(q="'me' in owners and  not mimeType contains 'application/vnd.google-apps'",
-        pageSize=1000,
-        spaces="drive",
-        fields="files(id, name, size, mimeType, quotaBytesUsed)").execute()
+            if (collection[mid] > target):
+                start = mid + 1
+            else:
+                end = mid
 
-#0BwjaEAUUi370ZVBKNXFheFRCWUE
-    child = service.files().list(q="'0BwjaEAUUi370QWdEeWY2eTR6YjQ' in parents and 'me' in owners",
-                                 fields="files(id, name, size, mimeType, quotaBytesUsed)", pageSize=1000).execute()
-    childrens = child.get('files', [])
-
-    items = results.get('files', [])
-    for itm in childrens:
-        print(itm)
-
-    print("General files")
-
-    if not items:
-        print('No files found.')
-    else:
-        print('Files:')
-        print(len(items))
-        for item in items:
-            print(item)
-
-main()
+        return -1
