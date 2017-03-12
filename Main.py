@@ -24,7 +24,7 @@ def main():
         fields="files(id, name, size, mimeType, quotaBytesUsed)").execute()
 
 
-    rootfile = service.files().list(q=" 'me' in owners and 'root' in parents ",
+    rootfile = service.files().list(q=" 'me' in owners",
         pageSize=1000,
         spaces="drive",
         fields="files(id, name, size, mimeType, parents, quotaBytesUsed)").execute()
@@ -43,9 +43,7 @@ def main():
     drive = { "root" : nodeRootFolder }
 
     for itemSorted in rootFolderSorted:
-        print(itemSorted)
+        print(itemSorted['parents'][0])
 
     op = DriveOp()
-    ok = op.jsonBinarySearch(rootFolderSorted, 'parents', rootid)
-    print(ok)
 main()
