@@ -3,6 +3,7 @@ import httplib2
 import os
 from apiclient import discovery
 
+from DriveOp import *
 import Node
 
 
@@ -44,4 +45,7 @@ def main():
     for itemSorted in rootFolderSorted:
         print(itemSorted)
 
+    op = DriveOp()
+    ok = op.jsonBinarySearch(rootFolderSorted, 'parents', rootid)
+    print(ok)
 main()
