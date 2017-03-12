@@ -7,17 +7,22 @@ class DriveOp:
         return int(bytesUsed)/1024/1024
 
     @staticmethod
-    def binarySearch(collection, target):
+    def jsonBinarySearch(listJson, attributeToCompare, elementTarget):
         start = 0
-        end = len(collection)-1
+        end = len(listJson)-1
         while (start < end):
-            mid = collection[(start+end)/2]
-            if (collection[mid] == target):
+            mid = listJson[(start+end)/2]
+            if (listJson[mid][attributeToCompare][0] == target):
                 return mid
 
-            if (collection[mid] > target):
+            if (listJson[mid][attributeToCompare][0] > target):
                 start = mid + 1
             else:
                 end = mid
 
         return -1
+
+
+
+
+

@@ -3,6 +3,9 @@ import httplib2
 import os
 from apiclient import discovery
 
+import Node
+
+
 def main():
     auth = Auth.Auth('https://www.googleapis.com/auth/drive.metadata.readonly', 'client_secret.json', 'drive')
     credentials = auth.get_credentials()
@@ -34,6 +37,9 @@ def main():
     else:
         print('Total Files:')
         print(len(rootfs))
+
+    nodeRootFolder = Node.Node("Folder", 0)
+    drive = { "root" : nodeRootFolder }
 
     for itemSorted in rootFolderSorted:
         print(itemSorted)
