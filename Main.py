@@ -39,11 +39,10 @@ def main():
         print('Total Files:')
         print(len(rootfs))
 
-    nodeRootFolder = Node.Node("Folder", 0)
-    drive = { "root" : nodeRootFolder }
+    nodeRootFolder = Node.Node("Folder", 0, rootid, "root")
 
     for itemSorted in rootFolderSorted:
-        print(itemSorted['parents'][0])
+        print(itemSorted)
 
     op = DriveOp()
 main()
