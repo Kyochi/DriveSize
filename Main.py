@@ -3,6 +3,10 @@ import httplib2
 import os
 from apiclient import discovery
 
+from DriveOp import *
+import Node
+
+
 def main():
     auth = Auth.Auth('https://www.googleapis.com/auth/drive.metadata.readonly', 'client_secret.json', 'drive')
     credentials = auth.get_credentials()
@@ -20,7 +24,7 @@ def main():
         fields="files(id, name, size, mimeType, quotaBytesUsed)").execute()
 
 
-    rootfile = service.files().list(q=" 'me' in owners and 'root' in parents ",
+    rootfile = service.files().list(q=" 'me' in owners",
         pageSize=1000,
         spaces="drive",
         fields="files(id, name, size, mimeType, parents, quotaBytesUsed)").execute()
@@ -35,7 +39,10 @@ def main():
         print('Total Files:')
         print(len(rootfs))
 
+    nodeRootFolder = Node.Node("Folder", 0, rootid, "root")
+
     for itemSorted in rootFolderSorted:
         print(itemSorted)
 
+    op = DriveOp()
 main()
