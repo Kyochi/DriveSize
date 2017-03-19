@@ -8,6 +8,7 @@
 #api file
 client_secret.json
 *.pyc
+logs/
 
 # User-specific stuff:
 .idea/*
