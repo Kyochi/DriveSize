@@ -6,6 +6,22 @@ from apiclient import discovery
 from DriveOp import *
 import Node
 
+def getListFiles(gDriveService):
+    res = gDriveService.files().list(q=" 'me' in owners or mimeType = 'application/vnd.google-apps.folder'",
+                         pageSize=1000,
+                         spaces="drive",
+                         fields="nextPageToken, files( id, name, size, mimeType, parents, quotaBytesUsed)").execute()
+    resultList = res.get('files', [])
+    nextTok = res.get('nextPageToken', None)
+    while (nextTok != None):
+        res =  gDriveService.files().list(q=" 'me' in owners or mimeType = 'application/vnd.google-apps.folder'",
+                                                pageSize=1000,
+                                                spaces="drive",
+                                                pageToken=nextTok,
+                                                fields="nextPageToken, files( id, name, size, mimeType, parents, quotaBytesUsed)").execute()
+        resulList = resulList + res.get('files', [])
+        nextTok = res.get('nextPageToken', None)
+
 
 def main():
     auth = Auth.Auth('https://www.googleapis.com/auth/drive.metadata.readonly', 'client_secret.json', 'drive')
@@ -24,14 +40,13 @@ def main():
         fields="files(id, name, size, mimeType, quotaBytesUsed)").execute()
 
 
-    rootfile = service.files().list(q=" 'me' in owners",
+    rootfile = service.files().list(q=" 'me' in owners ",
         pageSize=1000,
         spaces="drive",
-        fields="files(id, name, size, mimeType, parents, quotaBytesUsed)").execute()
+        fields="nextPageToken, files( id, name, size, mimeType, parents, quotaBytesUsed)").execute()
 
 
     rootfs = rootfile.get('files', [])
-    rootFolderSorted = sorted(rootfs,key=lambda parent : parent['parents'][0])
 
     if not rootfs:
         print('No files found.')
@@ -41,21 +56,21 @@ def main():
 
     nodeRootFolder = Node.Node("application/vnd.google-apps.folder", 0, rootid, "rootDrive", -1)
 
-    i = 0
-    n = 0
-    for itemSorted in rootFolderSorted:
-        print(itemSorted)
-        if (not(itemSorted['mimeType'].startswith("application/vnd.google-apps"))):
-            i = i + float(itemSorted['size'])
-            n = n+1
+    rootFolderSorted = sorted(rootfs,key=lambda parent : parent['parents'][0])
 
-    print(i)
-    print(n)
+    # for itemSorted in rootFolderSorted:
+    #     print(itemSorted)
+    #     if (not(itemSorted['mimeType'].startswith("application/vnd.google-apps"))):
+    #         i = i + float(itemSorted['size'])
+    #         n = n+1
+    #
+    # print(i)
+    # print(n)
 
-    op = DriveOp()
-    size = op.dfsDriveSize(rootFolderSorted, nodeRootFolder)
-    print(len(rootFolderSorted))
-    print(size)
-    print(op.getMo(size))
+    # op = DriveOp()
+    # size = op.dfsDriveSize(rootFolderSorted, nodeRootFolder)
+    # print(len(rootFolderSorted))
+    # print(size)
+    # print(op.getMo(size))
 
 main()
