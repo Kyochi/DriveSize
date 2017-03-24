@@ -1,46 +1,17 @@
-import Auth
-import httplib2
-import os
-from apiclient import discovery
-
-from DriveOp import *
 import Node
-
-def getListFiles(gDriveService):
-    res = gDriveService.files().list(q=" 'me' in owners or mimeType = 'application/vnd.google-apps.folder'",
-                         pageSize=1000,
-                         spaces="drive",
-                         fields="nextPageToken, files( id, name, size, mimeType, parents, quotaBytesUsed)").execute()
-    resultList = res.get('files', [])
-    nextTok = res.get('nextPageToken', None)
-    while (nextTok != None):
-        res =  gDriveService.files().list(q=" 'me' in owners or mimeType = 'application/vnd.google-apps.folder'",
-                                                pageSize=1000,
-                                                spaces="drive",
-                                                pageToken=nextTok,
-                                                fields="nextPageToken, files( id, name, size, mimeType, parents, quotaBytesUsed)").execute()
-        resulList = resulList + res.get('files', [])
-        nextTok = res.get('nextPageToken', None)
-
+import ApiDrive
 
 def main():
-    auth = Auth.Auth('https://www.googleapis.com/auth/drive.metadata.readonly', 'client_secret.json', 'drive')
-    credentials = auth.get_credentials()
-    http = credentials.authorize(httplib2.Http())
-    service = discovery.build('drive', 'v3', http=http)
-    service2 = discovery.build('drive', 'v2', http=http)
 
-    aboutDrive = service2.about().get().execute()
-    rootid = aboutDrive['rootFolderId']
-    print(rootid)
+    api = ApiDrive()
 
-    results = service.files().list(q="'me' in owners and  not mimeType contains 'application/vnd.google-apps'",
+    results = api.serviceV3.files().list(q="'me' in owners and  not mimeType contains 'application/vnd.google-apps'",
         pageSize=1000,
         spaces="drive",
         fields="files(id, name, size, mimeType, quotaBytesUsed)").execute()
 
 
-    rootfile = service.files().list(q=" 'me' in owners ",
+    rootfile = api.serviceV2.files().list(q=" 'me' in owners ",
         pageSize=1000,
         spaces="drive",
         fields="nextPageToken, files( id, name, size, mimeType, parents, quotaBytesUsed)").execute()
@@ -54,7 +25,7 @@ def main():
         print('Total Files:')
         print(len(rootfs))
 
-    nodeRootFolder = Node.Node("application/vnd.google-apps.folder", 0, rootid, "rootDrive", -1)
+    nodeRootFolder = Node.Node("application/vnd.google-apps.folder", 0, api.root, "rootDrive", -1)
 
     rootFolderSorted = sorted(rootfs,key=lambda parent : parent['parents'][0])
 
