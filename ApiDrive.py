@@ -1,6 +1,5 @@
 import Auth
 import httplib2
-import os
 from apiclient import discovery
 
 class ApiDrive:
@@ -13,18 +12,21 @@ class ApiDrive:
         aboutDrive = self.serviceV2.about().get().execute()
         self.root = aboutDrive['rootFolderId']
 
-    def getListFiles(self, gDriveService):
-        res = gDriveService.files().list(q=" 'me' in owners or mimeType = 'application/vnd.google-apps.folder'",
+    def getListFiles(self):
+        res = self.serviceV3.files().list(q="'me' in owners",
                                          pageSize=1000,
                                          spaces="drive",
                                          fields="nextPageToken, files( id, name, size, mimeType, parents, quotaBytesUsed)").execute()
         resultList = res.get('files', [])
         nextTok = res.get('nextPageToken', None)
         while (nextTok != None):
-            res = gDriveService.files().list(q=" 'me' in owners or mimeType = 'application/vnd.google-apps.folder'",
+            print("ok")
+            res = self.serviceV3.files().list(q="'me' in owners ",
                                              pageSize=1000,
                                              spaces="drive",
                                              pageToken=nextTok,
                                              fields="nextPageToken, files( id, name, size, mimeType, parents, quotaBytesUsed)").execute()
-            resulList = resulList + res.get('files', [])
+            resultList = resultList + res.get('files', [])
             nextTok = res.get('nextPageToken', None)
+
+        return resultList
