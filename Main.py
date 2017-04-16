@@ -1,22 +1,18 @@
-import Node
-import ApiDrive
-import DriveOp
+from drivesize.ApiDrive import ApiDrive
+from drivesize.Tree import Tree
 
 def main():
 
-    api = ApiDrive.ApiDrive()
-    rootfs = api.getListFiles()
-    if not rootfs:
+    api = ApiDrive()
+    files = api.getFiles()
+    if not files:
         print('No files found.')
     else:
         print('Total Files:')
-        print(len(rootfs))
+        print(len(files))
 
-    nodeRootFolder = Node.Node("application/vnd.google-apps.folder", 0, api.root, "rootDrive", -1)
-    rootFolderSorted = sorted(rootfs,key=lambda parent : ('parents' not in parent, parent.get('parents', [])))
-    op = DriveOp.DriveOp()
-    l = []
-    size = op.dfsDriveSize(rootFolderSorted, nodeRootFolder, l)
-    print(size)
+    mydrive = Tree(api.root)
+    mydrive.buildTree(files)
+    print(mydrive.getSizeOf(mydrive.treesize))
 
 main()

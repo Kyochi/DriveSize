@@ -1,9 +1,10 @@
-import Node
+from drivesize import Node
+
 
 class DriveOp:
     @staticmethod
-    def getMo(bytesUsed):
-        return (bytesUsed)/1024/1024
+    def getGo(bytesUsed):
+        return (bytesUsed)/1024/1024/1024
 
     @staticmethod
     def jsonBinarySearch(jsonList, attributeToCompare, elementTarget):
@@ -64,7 +65,7 @@ class DriveOp:
 
         if (curNode.m_id == "0AAjaEAUUi370Uk9PVA"):
             sizeOfSharedElement = 0
-            sharedFolder = Node.Node("application/vnd.google-apps.folder",sizeOfSharedElement, "", "SharedDocs", -1)
+            sharedFolder = Node.Node("application/vnd.google-apps.folder", sizeOfSharedElement, "", "SharedDocs", -1)
             sharedFolder.m_childs = []
             for indElement in set(range(len(jsonList)))- set(list):
                 child = Node.Node(jsonList[indElement]['mimeType'], float(jsonList[indElement].get('size', 0)), jsonList[indElement]['id'], jsonList[indElement]['name'], indElement)
