@@ -5,10 +5,9 @@ Do you really want to know the size of any folder in Google Drive ?  DriveSize's
 ## Installation & Usage setup
 
 Before running DriveSize, your DriveSize directory should be like this:
-|-- drivesize/
-    |-- ....
-|-- main.py
-|-- client_secret.json
+>|-- drivesize/  
+>|-- main.py  
+>|-- client_secret.json  
 
 ### What is client_secret.json ?
 It's a file containing your credentials to allow the script to get informations about your gDrive files.
