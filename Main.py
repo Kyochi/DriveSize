@@ -14,5 +14,6 @@ def main():
     mydrive = Tree(api.root)
     mydrive.buildTree(files)
     print(mydrive.getSizeOf(mydrive.treesize))
+    raw_input()
 
 main()
