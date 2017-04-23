@@ -1,6 +1,6 @@
 ![alt tag](http://i.imgur.com/Q4CcJth.png)
 
-Do you really want to know the size of any folder in Google Drive ?  DriveSize's coming.
+Do you really want to know the size of any folder in Google Drive ?  DriveSize is here.
 
 ## Installation & Usage setup
 
@@ -24,6 +24,7 @@ In few steps (https://developers.google.com/drive/v3/web/quickstart/python):
 
 ## Usage example
 ```shell
-$ python globalsize MB
-XXX mB
+$ python main.py
+Enter the name of the folder (regex) : Bahamas
+"Bahamas 2017" Size: 20.0 Go
 ```
