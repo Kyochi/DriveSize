@@ -9,7 +9,8 @@ class Tree:
     def buildTree(self, files):
         self.rootFolder =  Node("application/vnd.google-apps.folder", 0, self._rootId, "rootDrive", -1)
         self._sortedFiles = sorted(files,key=lambda parent : ('parents' not in parent, parent.get('parents', [])))
-        self.treesize = self._driveBuilder.dfsDriveSize(self._sortedFiles,self.rootFolder, [])
+        self.folders = []
+        self.treesize = self._driveBuilder.dfsDriveSize(self._sortedFiles,self.rootFolder, [], self.folders)
 
     def getSizeOf(self, size):
         return self._driveBuilder.getGo(size)
