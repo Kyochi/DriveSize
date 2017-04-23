@@ -4,7 +4,7 @@ from drivesize import Node
 class DriveOp:
     @staticmethod
     def getGo(bytesUsed):
-        return (bytesUsed)/1024/1024/1024
+        return (bytesUsed)/pow(1024,3)
 
     @staticmethod
     def jsonBinarySearch(jsonList, attributeToCompare, elementTarget):
