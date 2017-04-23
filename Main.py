@@ -22,7 +22,7 @@ def main():
         regex = re.compile(regexStr)
         for node in mydrive.folders:
             if (re.search(regex, node.m_name)):
-                print(node.m_name+ " Size: " + str(node.m_size/pow(1024,3)) + " Go")
+                print("\"" + node.m_name + "\""+ " Size: " + str(node.m_size/pow(1024,3)) + " Go")
 
         print("")
     raw_input()
