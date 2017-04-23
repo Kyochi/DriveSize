@@ -4,7 +4,7 @@ from drivesize import Node
 class DriveOp:
     @staticmethod
     def getGo(bytesUsed):
-        return (bytesUsed)/1024/1024/1024
+        return (bytesUsed)/pow(1024,3)
 
     @staticmethod
     def jsonBinarySearch(jsonList, attributeToCompare, elementTarget):
@@ -40,7 +40,7 @@ class DriveOp:
         return bounds
 
     @staticmethod
-    def dfsDriveSize(jsonList, curNode, list):
+    def dfsDriveSize(jsonList, curNode, list, folders):
 
         posChild = DriveOp.jsonBinarySearch(jsonList, "parents", curNode.m_id)
         if (posChild == -1):
@@ -51,17 +51,22 @@ class DriveOp:
         rangeParents = DriveOp.getIdRange(jsonList, "parents", posChild)
         indexCurrentElement = rangeParents[0]
 
+        folders.append(curNode)
+
         while(indexCurrentElement <= rangeParents[1]):
             element = jsonList[indexCurrentElement]
-            if (element['mimeType'].startswith("application/vnd.google-apps")):
+            if (element['mimeType'] == "application/vnd.google-apps.folder"):
+                child = Node.Node(element['mimeType'], 0, element['id'], element['name'], indexCurrentElement)
+            elif (element['mimeType'].startswith("application/vnd.google-apps")):
                 child = Node.Node("gdoc", 0, element['id'], element['name'], indexCurrentElement)
             else :
                 child = Node.Node(element['mimeType'], 0, element['id'], element['name'], indexCurrentElement)
 
-            curNode.m_size = curNode.m_size + DriveOp.dfsDriveSize(jsonList, child, list)
+            curNode.m_size = curNode.m_size + DriveOp.dfsDriveSize(jsonList, child, list, folders)
             (curNode.m_childs).append(child)
             list.append(indexCurrentElement)
             indexCurrentElement = indexCurrentElement + 1
+
 
         if (curNode.m_id == "0AAjaEAUUi370Uk9PVA"):
             sizeOfSharedElement = 0
@@ -73,6 +78,8 @@ class DriveOp:
                 sharedFolder.m_size = sharedFolder.m_size + child.m_size
             curNode.m_size = curNode.m_size + sharedFolder.m_size
             (curNode.m_childs).append(sharedFolder)
+
+            folders.append(sharedFolder)
         return curNode.m_size
 
 
