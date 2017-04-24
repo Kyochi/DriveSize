@@ -11,7 +11,7 @@ Before running DriveSize, your DriveSize directory should be like this:
 
 ### What is client_secret.json ?
 It's a file containing your credentials to allow the script to get informations about your gDrive files.
-### How to key my credentials ?
+### How to get my credentials ?
 In few steps (https://developers.google.com/drive/v3/web/quickstart/python):
 > - Use this wizard to create or select a project in the Google Developers Console and automatically turn on the API. Click Continue, then Go to credentials.
 > - On the Add credentials to your project page, click the Cancel button.
