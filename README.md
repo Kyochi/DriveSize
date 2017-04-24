@@ -1,10 +1,10 @@
 ![alt tag](http://i.imgur.com/Q4CcJth.png)
 
-Do you really want to know the size of any folder in Google Drive ?  DriveSize is here.
+Do you want to know the size of any folder in Google Drive ?  DriveSize is here.
 
 ## Installation & Usage setup
 
-Before running DriveSize, your DriveSize directory should be like this:
+Before running DriveSize, your DriveSize directory should look like this:
 >|-- drivesize/  
 >|-- main.py  
 >|-- client_secret.json  
@@ -12,7 +12,7 @@ Before running DriveSize, your DriveSize directory should be like this:
 ### What is client_secret.json ?
 It's a file containing your credentials to allow the script to get informations about your gDrive files.
 ### How to get my credentials ?
-In few steps (https://developers.google.com/drive/v3/web/quickstart/python):
+In a few steps (https://developers.google.com/drive/v3/web/quickstart/python):
 > - Use this wizard to create or select a project in the Google Developers Console and automatically turn on the API. Click Continue, then Go to credentials.
 > - On the Add credentials to your project page, click the Cancel button.
 >- At the top of the page, select the OAuth consent screen tab. Select an Email address, enter a Product name if not already set, and click the Save button.
