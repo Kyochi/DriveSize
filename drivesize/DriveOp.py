@@ -1,7 +1,7 @@
 from drivesize import Node
 
+class DriveOp():
 
-class DriveOp:
     @staticmethod
     def getGo(bytesUsed):
         return (bytesUsed)/pow(1024,3)
