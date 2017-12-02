@@ -14,7 +14,7 @@ def main():
 
     mydrive = Tree(api.root)
     mydrive.buildTree(files)
-    print(mydrive.getSizeOf(mydrive.treesize))
+    print("Global size : " + mydrive.getSizeOf(mydrive.treesize))
 
     while True:
         regexStr = raw_input("Enter the name of the folder (regex) : ")
