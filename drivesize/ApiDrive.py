@@ -22,7 +22,6 @@ class ApiDrive:
         resultList = res.get('files', [])
         nextTok = res.get('nextPageToken', None)
         while (nextTok != None):
-            print("ok")
             res = self.serviceV3.files().list(q="'me' in owners ",
                                              pageSize=1000,
                                              spaces="drive",
